@@ -4,12 +4,10 @@
         <div class="api-list">
             <el-row class="tac">
                 <el-col :span="24">
-                    <el-menu :defaultActive="active" class="el-menu-vertical-demo" theme="dark" :router="true" :uniqueOpened="true">
-                        <el-submenu index="1">
-                            <template slot="title"><i class="el-icon-document"></i>导航一</template>
-                            <el-menu-item index="/api/1">选项1</el-menu-item>
-                            <el-menu-item index="/api/2">选项2</el-menu-item>
-                            <el-menu-item index="/api/3">选项3</el-menu-item>
+                    <el-menu class="el-menu-vertical-demo" theme="dark" :router="true" :uniqueOpened="true">
+                        <el-submenu :index="key" v-for="(value, key) in apiList">
+                            <template slot="title"><i class="el-icon-document"></i>{{ key }}</template>
+                            <el-menu-item :index="'/api/' + item.value" v-for="item in value">{{ item.label }}</el-menu-item>
                         </el-submenu>
                     </el-menu>
                 </el-col>
@@ -22,11 +20,17 @@
 export default {
     data () {
         return {
-            active: '/api/1'
+            apiList: {}
         }
     },
     mounted () {
-        this.active = this.$route.path
+        this.$http({
+            url: '/get_apis/',
+            method: 'POST'
+        })
+        .then(response => {
+            this.apiList = response.data
+        })
     }
 }
 </script>

@@ -3,7 +3,7 @@
         <div class="nav">
             <el-button icon="arrow-left" v-on:click.native="back">返回</el-button>
             &nbsp;&nbsp;
-            <el-button type="primary" icon="check">保存</el-button>
+            <el-button type="primary" icon="check" v-on:click.native="save">保存</el-button>
         </div>
         <div id="editor-wrapper" class="container">
             <textarea v-model="content" @keyup="compile"></textarea>
@@ -28,17 +28,67 @@ export default {
         }
     },
     methods: {
+
+        // markdown转化
         compile () {
             let text = this.content,
                 converter = new showdown.Converter(),
-                html = converter.makeHtml(text)
+                html = converter.makeHtml(text);
 
             this.html = html
         },
+
+        // 返回
         back () {
             let id = this.$route.params.id
 
             this.$router.push({name: 'api', params: {id: id}})
+        },
+
+        // 保存
+        save () {
+            this.$http({
+                url: '/save_api_info/',
+                method: 'POST',
+                body: {
+                    id: this.$route.params.id,
+                    content: this.content
+                }
+            })
+            .then(response => {
+                let result = response.data.result
+
+                if (result) {
+                    this.$notify.success({
+                        title: '成功',
+                        message: '保存成功'
+                    })
+                } else {
+                    this.$notify.error({
+                        title: '错误',
+                        message: '保存失败了'
+                    })
+                }
+            })
+        },
+
+        // 加载API
+        apiLoad () {
+            this.$http({
+                url: '/get_api_info/?id=' + this.$route.params.id,
+            })
+            .then(response => {                            
+                this.content = response.data
+
+                this.compile()
+            })
+        }
+    },
+    watch: {
+        '$route' (to, from) {
+            if (from.name === 'api' && to.name === 'editor') {
+                this.apiLoad()
+            }
         }
     }
 }
