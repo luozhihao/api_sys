@@ -24,8 +24,13 @@ module.exports = {
                 test: /\.(woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=50000&name=[path][name].[ext]'
             },
-            {   test: /\.css$/, 
+            {   
+                test: /\.css$/, 
                 loader: 'style-loader!css-loader?sourceMap' 
+            },
+            {   
+                test: /\.json$/, 
+                loader: 'json-loader?sourceMap' 
             }
         ]
     },

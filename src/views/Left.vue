@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <div class="logo">API 接口管理系统</div>
+        <div class="logo" @click="$router.push({name: 'view'})">API 接口管理系统</div>
         <div class="api-list">
             <el-row class="tac">
                 <el-col :span="24">
@@ -29,7 +29,9 @@ export default {
             method: 'POST'
         })
         .then(response => {
-            this.apiList = response.data
+            this.apiList = response.data.menu
+
+            this.$emit('getEdit', response.data.edit)
         })
     }
 }
@@ -56,5 +58,9 @@ export default {
     color: #fff;
     font-size: 18px;
     border-bottom: 1px solid #324057;
+}
+
+.logo:hover {
+    cursor: pointer;
 }
 </style>

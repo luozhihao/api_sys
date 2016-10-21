@@ -15,7 +15,8 @@
 </template>
 
 <script>
-var showdown = require('showdown')
+const showdown = require('showdown')
+const str = require('../../template.json').content
 
 showdown.setOption('tables', true)
 showdown.setOption('omitExtraWLInCodeBlocks', true)
@@ -77,8 +78,14 @@ export default {
             this.$http({
                 url: '/get_api_info/?id=' + this.$route.params.id,
             })
-            .then(response => {                            
-                this.content = response.data
+            .then(response => {
+                let content = response.data.content                     
+                
+                if (this.content) {
+                    this.content = content
+                } else {
+                    this.content = str
+                }
 
                 this.compile()
             })
@@ -86,10 +93,15 @@ export default {
     },
     watch: {
         '$route' (to, from) {
+            console.log(111)
+
             if (from.name === 'api' && to.name === 'editor') {
                 this.apiLoad()
             }
         }
+    },
+    mounted () {
+        this.apiLoad()
     }
 }
 </script>
@@ -145,6 +157,7 @@ textarea {
     max-height: 97%;
     width: 49%;
     padding: 30px 20px;
+    background: #f8f9fa;
 }
 
 .container>* {

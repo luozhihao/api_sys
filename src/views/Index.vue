@@ -1,10 +1,10 @@
 <template>
     <div class="main">
-        <Left></Left>
+        <Left @getEdit="setEdit"></Left>
         <div class="right-view" v-loading="loading">
             <div class="right-main">
                 <keep-alive>
-                    <router-view @loadingfn="setLoading"></router-view>
+                    <router-view @loadingfn="setLoading" :editable="editable"></router-view>
                 </keep-alive>
             </div>
         </div>
@@ -17,12 +17,16 @@ import Left from './Left.vue'
 export default {
     data () {
         return {
-            loading: false
+            loading: false,
+            editable: false
         }
     },
     methods: {
         setLoading (isLoading) {
             this.loading = isLoading
+        },
+        setEdit (param) {
+            this.editable = param
         }
     },
     components: {

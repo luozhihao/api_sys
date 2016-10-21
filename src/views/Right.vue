@@ -2,7 +2,7 @@
     <el-card class="box-card h100 scroll">
         <div slot="header" class="clearfix">
             <span style="line-height: 36px;">API文档</span>
-            <el-button style="float: right;" type="primary" v-on:click.native="edit">编辑</el-button>
+            <el-button style="float: right;" type="primary" v-on:click.native="edit" v-if="editable">编辑</el-button>
         </div>
         <div class="text item h100">
             <div class="content" v-html="api">
@@ -18,6 +18,7 @@ showdown.setOption('tables', true)
 showdown.setOption('omitExtraWLInCodeBlocks', true)
 
 export default {
+    props: ['editable'],
     data () {
         return {
             api: ''
@@ -45,22 +46,20 @@ export default {
                 setTimeout(() => {
                     this.$emit('loadingfn', false)
 
-                    this.api = converter.makeHtml(response.data)
+                    this.api = converter.makeHtml(response.data.content)
                 }, 500)
             })
         }
     },
     watch: {
         '$route' (to, from) {
-            if (to.name !== 'editor') {
+            if (to.name === 'api') {
                 this.apiLoad()
             }
         }
     },
     mounted () {
-        if (this.$route.params.id) {
-            this.apiLoad()
-        }
+        this.apiLoad()
     }
 }
 </script>

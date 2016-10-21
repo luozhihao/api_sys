@@ -42,7 +42,6 @@ textarea:focus {
 }
 
 button:focus {
-    border-color: none !important;
     outline: none !important;
 }
 
@@ -53,6 +52,7 @@ fieldset[disabled] .form-control {
 
 h1, h2, h3, h4, strong {
     color: #2c3e50;
+    font-weight: 600;
     font-family: Arial, "Microsoft YaHei";
 }
 
@@ -88,6 +88,10 @@ h3 {
     z-index: 100;
 }
 
+#preview {
+    background: #fff;
+}
+
 #preview ul {
     padding-left: 10px;
 }
@@ -103,17 +107,39 @@ pre {
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
-    background-color: #f8f8f8;
-    border: 1px solid #dfdfdf;
+    background-color: #f8f8ff;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-    padding: 0.125rem 0.3125rem 0.0625rem;
+    padding: 2em;
 }
 
 pre code {
     background-color: transparent;
     border: 0;
     padding: 0;
+}
+
+blockquote {
+    border-left: 2px solid #ddd;
+}
+
+table {
+    font-size: .8em;
+    width: 100%;
+    overflow: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: none;
+}
+
+table thead {
+    background: #007fff;
+    color: #fff;
+    text-align: left;
+}
+
+table thead tr th {
+    color: #fff
 }
 
 
